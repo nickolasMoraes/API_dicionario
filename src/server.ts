@@ -1,9 +1,13 @@
 import express, { Request, Response } from 'express';
 import axios from 'axios';
 import cheerio, { CheerioAPI } from 'cheerio';
+import cors from 'cors';  // Importe a biblioteca cors
 
 const app = express();
 const port = 3000;
+
+// Adicione a middleware cors ao seu aplicativo Express
+app.use(cors());
 
 app.get('/search/:word', async (req: Request, res: Response) => {
   const word = req.params.word;
@@ -11,6 +15,7 @@ app.get('/search/:word', async (req: Request, res: Response) => {
     const meaning = await getMeaning(word);
     res.json({ word, meaning });
   } catch (error) {
+    console.error(error);  // Logue o erro no console
     res.status(500).json({ error: 'Erro ao obter significado da palavra.' });
   }
 });
